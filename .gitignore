@@ -1,0 +1,8 @@
+*.pyc
+*~
+__pycache__
+blog/migrations
+pics
+README.md
+env
+.vscode
