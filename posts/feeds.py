@@ -8,7 +8,7 @@ class LastEntriesFeed(Feed):
     description = "Latest posts"
 
     def items(self):
-        return Post.objects.order_by("-published")
+        return Post.objects.published().order_by("-published")
 
     def item_title(self, item):
         return item.title

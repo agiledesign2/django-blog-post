@@ -35,8 +35,8 @@ EMAIL_USE_TLS = False
 EMAIL_PORT = 1025
 
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
-# STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
 
 # Media files
 MEDIA_URL = "/media/"

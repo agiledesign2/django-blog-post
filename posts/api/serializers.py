@@ -44,7 +44,7 @@ class PostListSerializer(serializers.ModelSerializer):
         view_name="post-detail", lookup_field="slug"
     )
     author = AuthorListingField(queryset=User.objects.all())
-    published_date = serializers.DateTimeField(format="%a, %d %b  %I:%M %p")
+    published = serializers.DateTimeField(format="%a, %d %b  %I:%M %p")
 
     class Meta:
         model = Post
@@ -57,7 +57,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
     )
     author = AuthorListingField(queryset=User.objects.all())
     category = CategoryListingField(queryset=Category.objects.all(), many=True)
-    published_date = serializers.DateTimeField(format="%a, %d %b  %I:%M %p")
+    published = serializers.DateTimeField(format="%a, %d %b  %I:%M %p")
 
     class Meta:
         model = Post
@@ -78,7 +78,7 @@ class PostCreateUpdateSerializer(serializers.ModelSerializer):
     )
     author = serializers.HiddenField(default=CurrentUserDefault())
     category = CategoryListingField(queryset=Category.objects.all(), many=True)
-    published_date = serializers.DateTimeField(
+    published = serializers.DateTimeField(
         format="%a, %d %b  %I:%M %p", read_only=True
     )
 

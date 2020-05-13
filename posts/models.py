@@ -31,12 +31,12 @@ class Category(models.Model):
     """
     #Category
     """
-    name = models.CharField(max_length=30, verbose_name='分类名称')
-    index = models.IntegerField(default=99, verbose_name='分类排序')
-    active = models.BooleanField(default=True, verbose_name='是否添加到菜单')
-    icon = models.CharField(max_length=30, default='fa-home',verbose_name='菜单图标')
+    name = models.CharField(max_length=30, verbose_name='Name')
+    index = models.IntegerField(default=99, verbose_name='Index')
+    active = models.BooleanField(default=True, verbose_name='Active')
+    icon = models.CharField(max_length=30, default='fa-home',verbose_name='Icon')
 
-    # 统计文章数 并放入后台
+    # Get all Categorys
     def get_items(self):
         return len(self.article_set.all())
 
@@ -46,11 +46,11 @@ class Category(models.Model):
             self.icon,
         )
 
-    get_items.short_description = '文章数'
-    icon_data.short_description = '图标预览'
+    get_items.short_description = 'Categorys'
+    icon_data.short_description = 'Icon'
 
     class Meta:
-        verbose_name = '分类'
+        verbose_name = 'Category'
         verbose_name_plural = verbose_name
 
     def __str__(self):
@@ -78,6 +78,7 @@ class Post(models.Model):
     #STATE_CHOICES = PINAX_BLOG_STATE_CHOICES
 
     category = models.ManyToManyField(Category,_("Category"), blank=False)
+    #category = models.ForeignKey(Category, blank=True, null=True, verbose_name='Category', on_delete=models.CASCADE)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name="autors",
@@ -90,23 +91,22 @@ class Post(models.Model):
     #slug = models.SlugField(max_length=255, unique=True)
     content = MarkdownxField()  # markdownx
     #content = RichTextField()
-    #published_date = models.DateTimeField(auto_now=True)
+    #content = MDTextField(verbose_name='Content')
     description = models.TextField(_("Description"), max_length=150, help_text="Enter you description text here.")
     #description = models.TextField(max_length=2000, help_text="Enter you blog text here.")
-    #cover = models.CharField(max_length=200, default='https://image.3001.net/images/20200304/15832956271308.jpg', verbose_name='文章封面')
-    #content = MDTextField(verbose_name='文章内容')
+    #cover = models.CharField(max_length=200, default='https://image.3001.net/images/20200304/15832956271308.jpg', verbose_name='Cover')
     created = models.DateTimeField(_("Created"), default=timezone.now, editable=False)  # when first revision was created
     updated = models.DateTimeField(_("Updated"), null=True, blank=True, editable=False)  # when last revision was created (even if not published)
     published = models.DateTimeField(_("Published"), null=True, blank=True)  # when last published
-    #click_count = models.IntegerField(default=0, verbose_name='点击次数')
-    #is_recommend = models.BooleanField(default=False, verbose_name='是否推荐')
+    #published_date = models.DateTimeField(auto_now=True)
+    #is_recommend = models.BooleanField(default=False, verbose_name='Is Recommend')
     allow_comments = models.BooleanField(default=True)
     #status = models.CharField(default="DRAFT", choices=STATUS, max_length=10)
     status = models.SmallIntegerField(_("State"), choices=STATUS)
-    #state = models.IntegerField(_("State"), choices=STATE_CHOICES, default=STATE_CHOICES[0][0])
+    #status = models.IntegerField(_("State"), choices=STATE_CHOICES, default=STATE_CHOICES[0][0])
     views_count = models.IntegerField(_("View count"), default=0, editable=False)
-    #category = models.ForeignKey(Category, blank=True, null=True, verbose_name='文章分类', on_delete=models.CASCADE)
-    #tag = models.ManyToManyField(Tag, verbose_name='文章标签')
+    #click_count = models.IntegerField(default=0, verbose_name='Click Count')
+    #tag = models.ManyToManyField(Tag, verbose_name='Tag')
 
     # tags mechanism
     tags = TaggableManager(blank=True)
@@ -156,11 +156,11 @@ class Post(models.Model):
         self.click_count += 1
         self.save(update_fields=['click_count'])
 
-    cover_data.short_description = '文章封面'
-    cover_admin.short_description = '文章封面'
+    cover_data.short_description = 'Cover'
+    cover_admin.short_description = 'Admin Cover'
 
     class Meta:
-        verbose_name = '文章'
+        verbose_name = 'Post'
         verbose_name_plural = verbose_name
     """
         """

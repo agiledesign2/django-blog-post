@@ -5,4 +5,5 @@ blog/migrations
 pics
 README.md
 env
+db.sqlite3
 .vscode

@@ -134,6 +134,11 @@ class DetailsPost(CategoryDatesMixin, DetailView):
     model = Post
     template_name = "posts/post_detail.html"
 
+    def get_queryset(self, queryset=None):
+        item = super().get_object(queryset)
+        item.viewed()
+        return item
+
 
 # Post archive views
 class ArchiveMixin:
@@ -183,7 +188,7 @@ class PostDraftsList(
 
     def get_queryset(self):
         return Post.objects.filter(
-            status="DRAFT", author__username=self.request.user.username
+            status=Post.STATUS_PUBLISHED, author__username=self.request.user.username
         )
 
 
