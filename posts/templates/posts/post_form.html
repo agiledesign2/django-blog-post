@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %} {% if update %}Update{% else %}Add{% endif %} Post {% endblock %}
 
@@ -25,7 +26,8 @@
     {% endif %}
     <form method="post">
         {% csrf_token %}
-        <div class="row">
+        {{ form|crispy }}
+        <!--<div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="font-weight-bold">{{ form.title.label_tag }}</label>
@@ -56,8 +58,13 @@
                     {{ form.content }}
                 </div>
             </div>
-        </div>
+        </div>-->
         <input class="btn btn-primary" type="submit" value="Submit" />
+        <!--<div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn">Update</button>
+            </div>
+        </div>-->
     </form>
     {{ form.media }}
 </div>

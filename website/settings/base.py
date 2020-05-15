@@ -13,6 +13,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'crispy_forms',
     "posts",
     "contact",
     "accounts",
@@ -49,6 +50,8 @@ TEMPLATES = [
         },
     }
 ]
+# http://django-crispy-forms.readthedocs.io/en/latest/install.html#template-packs
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 WSGI_APPLICATION = "website.wsgi.application"
 

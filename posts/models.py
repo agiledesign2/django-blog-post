@@ -64,6 +64,9 @@ class PostQuerySet(models.QuerySet):
     def published(self):
         return self.filter(status=Post.STATUS_PUBLISHED)
 
+    def draft(self):
+        return self.filter(status=Post.STATUS_DRAFT)
+
 
 class Post(models.Model):
     STATUS_DRAFT = 1
@@ -87,7 +90,7 @@ class Post(models.Model):
     )
     #author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
     title = models.CharField(_("Title"), max_length=300)
-    slug = models.SlugField(max_length=255, unique_for_date="published_date")
+    slug = models.SlugField(max_length=255, unique_for_date="published")
     #slug = models.SlugField(max_length=255, unique=True)
     content = MarkdownxField()  # markdownx
     #content = RichTextField()
@@ -96,7 +99,8 @@ class Post(models.Model):
     #description = models.TextField(max_length=2000, help_text="Enter you blog text here.")
     #cover = models.CharField(max_length=200, default='https://image.3001.net/images/20200304/15832956271308.jpg', verbose_name='Cover')
     created = models.DateTimeField(_("Created"), default=timezone.now, editable=False)  # when first revision was created
-    updated = models.DateTimeField(_("Updated"), null=True, blank=True, editable=False)  # when last revision was created (even if not published)
+    updated = models.DateTimeField(_("Updated"), null=True, blank=True)  # when last revision was created (even if not published)
+    #published = models.DateTimeField(_("Published"), auto_now=True)  # when last published
     published = models.DateTimeField(_("Published"), null=True, blank=True)  # when last published
     #published_date = models.DateTimeField(auto_now=True)
     #is_recommend = models.BooleanField(default=False, verbose_name='Is Recommend')
@@ -133,8 +137,8 @@ class Post(models.Model):
 
     def viewed(self):
         self.view_count += 1
-        self.save()
-        self.current().viewed()
+        self.save(update_fields=['view_count'])
+        #self.current().viewed()
 
         """
     def cover_data(self):

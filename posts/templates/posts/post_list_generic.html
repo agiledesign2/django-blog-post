@@ -4,7 +4,7 @@
             <p><a href="{% url 'posts:details_post' slug=post.slug %}"><h2>{{ post.title }}</h2></a></p>
             <div class="row justify-content-between">
                 <div class="col-6">
-                Posted on &nbsp;<b>{{ post.published_date|date:"F j, Y" }}</b>&nbsp; by &nbsp;<b><a href="{% url 'posts:author' author=post.author.username %}">{{ post.author.username.capitalize }}</a></b>
+                Posted on &nbsp;<b>{{ post.published|date:"F j, Y" }}</b>&nbsp; by &nbsp;<b><a href="{% url 'posts:author' author=post.author.username %}">{{ post.author.username.capitalize }}</a></b>
                 |
                 <a href="{% url 'posts:details_post' slug=post.slug %}">Comments (<span class="fb-comments-count" data-href="{{ request.build_absolute_uri }}/{{ post.slug }}/"></span>)</a>
                 </div>

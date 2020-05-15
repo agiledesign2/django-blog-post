@@ -60,6 +60,10 @@ class ListPosts(CategoryDatesMixin, ListView):
     ordering = ("-published",)
     paginate_by = 5
 
+    def get_queryset(self):
+        results = Post.objects.published()
+        return results
+
 
 class ListByAuthor(CategoryDatesMixin, ListView):
     model = Post
@@ -72,7 +76,7 @@ class ListByAuthor(CategoryDatesMixin, ListView):
         author = self.kwargs.get("author", None)
         results = []
         if author:
-            results = Post.objects.filter(author__username=author)
+            results = Post.objects.published().filter(author__username=author)
         return results
 
     def get_context_data(self, **kwargs):
@@ -95,7 +99,7 @@ class ListByTag(CategoryDatesMixin, ListView):
         tag = self.kwargs.get("tag", None)
         results = []
         if tag:
-            results = Post.objects.filter(tags__name=tag)
+            results = Post.objects.published().filter(tags__name=tag)
         return results
 
     def get_context_data(self, **kwargs):
@@ -118,7 +122,7 @@ class ListByCategory(CategoryDatesMixin, ListView):
         category = self.kwargs.get("name", None)
         results = []
         if category:
-            results = Post.objects.filter(category__name=category)
+            results = Post.objects.published().filter(category__name=category)
         return results
 
     def get_context_data(self, **kwargs):
@@ -134,10 +138,10 @@ class DetailsPost(CategoryDatesMixin, DetailView):
     model = Post
     template_name = "posts/post_detail.html"
 
-    def get_queryset(self, queryset=None):
-        item = super().get_object(queryset)
-        item.viewed()
-        return item
+    #def get_queryset(self, queryset=None):
+        #item = super().get_object(self)
+        #item.viewed()
+        #return item
 
 
 # Post archive views
@@ -187,8 +191,8 @@ class PostDraftsList(
     context_object_name = "posts"
 
     def get_queryset(self):
-        return Post.objects.filter(
-            status=Post.STATUS_PUBLISHED, author__username=self.request.user.username
+        return Post.objects.draft().filter(
+            author__username=self.request.user.username
         )
 
 

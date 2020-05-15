@@ -1,4 +1,5 @@
 from django import forms
+from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.crypto import get_random_string
 from django.core.exceptions import ValidationError
@@ -23,7 +24,7 @@ def make_slug(instance, new_slug=None):
 class AddPostForm(forms.ModelForm):
     class Meta:
         model = Post
-        exclude = ("slug", "author")
+        exclude = ( "slug", "author", "created", "updated")
         widgets = {
             "title": forms.TextInput(
                 attrs={
@@ -46,11 +47,16 @@ class AddPostForm(forms.ModelForm):
         slug = cleaned_data.get("slug")
 
         if not slug and title:
+            print(title)
             cleaned_data["slug"] = slugify(title)
+            cleaned_data["published"] = timezone.now()
+            cleaned_data["updated"] = timezone.now()
+            print(cleaned_data)
 
         return cleaned_data
 
     def save(self, commit=True):
+        print(commit)
         instance = super().save(commit=False)
         instance.slug = make_slug(instance)
 

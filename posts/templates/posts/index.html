@@ -15,7 +15,7 @@
   <div class="row">
     <div class="col-md-6">
       <p>
-        Posted on &nbsp;<b>{{ post.published_date|date:"F j, Y" }}</b>&nbsp; by &nbsp;
+        Posted on &nbsp;<b>{{ post.published|date:"F j, Y" }}</b>&nbsp; by &nbsp;
         <b>
           <a href="{% url 'posts:author' author=post.author.username %}">{{ post.author.username.capitalize }}</a>
         </b>
