@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.crypto import get_random_string
 from django.core.exceptions import ValidationError
+#from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from .models import Category, Post
 from taggit.forms import TagWidget
 
@@ -20,11 +21,21 @@ def make_slug(instance, new_slug=None):
         return make_slug(instance, new_slug=new_slug)
     return slug
 
+"""
+class PostAdminForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        exclude = ('author', 'created_date', 'updated_date', 'published_date')
+        widgets = {
+            'body': CKEditorUploadingWidget(),
+            'snippet': CKEditorUploadingWidget(config_name='small'),
+        }
+"""
 
 class AddPostForm(forms.ModelForm):
     class Meta:
         model = Post
-        exclude = ( "slug", "author", "created", "updated")
+        exclude = ( "slug", "author", "created", "updated", "published")
         widgets = {
             "title": forms.TextInput(
                 attrs={
