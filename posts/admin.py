@@ -1,26 +1,34 @@
 from django.contrib import admin
+from django.utils import timezone
 from django.db import models
 from django.forms import TextInput, Textarea
 #from import_export.admin import ImportExportModelAdmin, ImportExportActionModelAdmin
 from .models import Category, Post
 
-list_display = ('title', 'category', 'cover_data', 'is_recommend', 'add_time', 'update_time')
-    search_fields = ('title', 'desc', 'content')
-    list_filter = ('category', 'tag', 'add_time')
-    list_editable = ('category', 'is_recommend')
-    date_hierarchy = 'created_date'
-    readonly_fields = ('cover_admin', )
-    list_display_links = ["title","created_date"]
+#@admin.register(Article)
+class PostAdmin(admin.ModelAdmin):	#(ImportExportModelAdmin):
+    list_display = (
+        'title', 'author', 'content', 'description', 'allow_comments', 
+        'tags', 'status', 'views_count', 'created', 'updated', 'published'
+    )
+    search_fields = ('title', 'author', 'description', 'content', 'published')
+    list_filter = ('category', 'author', 'tags', 'published')
+    list_editable = ('allow_comments',)
+    date_hierarchy = 'published'
+    #readonly_fields = ('cover_admin', )
+    list_display_links = ["title","published"]
     raw_id_fields = ('author',)
     list_per_page = 15
 
     fieldsets = (
-        ('Article', {
-            'fields': ('title', 'content')
+        ('Post', {
+            'fields': ('title', 'category', 'content', 'description', 'allow_comments', 'tags', 'status')
         }),
-        ('Admin Articles', {
+        ('Admin Posts', {
             'classes': ('collapse', ),
-            'fields': ('cover', 'cover_admin', 'desc', 'is_recommend', 'click_count', 'tag', 'category', 'add_time'),
+            'fields': ( 
+            	'published',
+            ),
         }),
     )
 
@@ -31,20 +39,21 @@ list_display = ('title', 'category', 'cover_data', 'is_recommend', 'add_time', '
     """
     form = PostAdminForm
     prepopulated_fields = {'slug': ('title',)}
+    """
 
     def save_model(self, request, obj, form, change):
         obj.author = request.user
-        if (obj.published_date is None
-                and obj.status in [Post.STATUS_PUBLISHED, Post.STATUS_ARCHIVED]):
-            obj.published_date = timezone.now()
+        if (obj.published is None
+                and obj.status in [Post.STATUS_PUBLISHED]):
+            obj.published = timezone.now()
         if change:
-            obj.updated_date = timezone.now()
+            obj.updated = timezone.now()
         super(PostAdmin, self).save_model(request, obj, form, change)
-    """
+
     #class Meta:
     #    model = Article
 
 
 # Register your models here.
 admin.site.register(Category)
-admin.site.register(Post)
+admin.site.register(Post, PostAdmin)

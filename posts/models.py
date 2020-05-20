@@ -59,12 +59,21 @@ class Category(models.Model):
 
 class PostQuerySet(models.QuerySet):
     def active(self):
+        """
+        Return all published and archived posts
+        """
         return self.filter(status__in=[Post.STATUS_PUBLISHED, Post.STATUS_ARCHIVED])
 
     def published(self):
+        """
+        Return all published posts
+        """
         return self.filter(status=Post.STATUS_PUBLISHED)
 
     def draft(self):
+        """
+        Return all defted posts
+        """
         return self.filter(status=Post.STATUS_DRAFT)
 
 
@@ -79,9 +88,6 @@ class Post(models.Model):
     )
     #STATUS = (("DRAFT", "Draft"), ("PUBLISHED", "Published"))
     #STATE_CHOICES = PINAX_BLOG_STATE_CHOICES
-
-    category = models.ManyToManyField(Category,_("Category"), blank=False)
-    #category = models.ForeignKey(Category, blank=True, null=True, verbose_name='Category', on_delete=models.CASCADE)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name="autors",
@@ -90,6 +96,8 @@ class Post(models.Model):
     )
     #author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
     title = models.CharField(_("Title"), max_length=300)
+    category = models.ManyToManyField(Category,_("Category"), blank=False)
+    #category = models.ForeignKey(Category, blank=True, null=True, verbose_name='Category', on_delete=models.CASCADE)
     slug = models.SlugField(max_length=255, unique_for_date="published")
     #slug = models.SlugField(max_length=255, unique=True)
     content = MarkdownxField()  # markdownx
@@ -118,11 +126,16 @@ class Post(models.Model):
 
     class Meta:
         ordering = ("-published",)
+        verbose_name = 'Post'
+        verbose_name_plural = 'Posts'
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
+        """
+        Redirect to post detail view
+        """
         return reverse("posts:details_post", kwargs={"slug": self.slug})
 
     @property
@@ -132,15 +145,23 @@ class Post(models.Model):
         """
         return markdownify(self.content)
 
-    def is_draft(self):
-        return self.status == "DRAFT"
-
     def viewed(self):
+        """
+        Increment post view count
+        """
         self.view_count += 1
         self.save(update_fields=['view_count'])
         #self.current().viewed()
 
         """
+
+    def viewed(self):
+        """
+        #Viewed
+        """
+        self.click_count += 1
+        self.save(update_fields=['click_count'])
+
     def cover_data(self):
         return format_html(
             '<img src="{}" width="156px" height="98px"/>',
@@ -153,33 +174,7 @@ class Post(models.Model):
             self.cover,
         )
 
-    def viewed(self):
-        """
-        #Viewed
-        """
-        self.click_count += 1
-        self.save(update_fields=['click_count'])
-
     cover_data.short_description = 'Cover'
     cover_admin.short_description = 'Admin Cover'
 
-    class Meta:
-        verbose_name = 'Post'
-        verbose_name_plural = verbose_name
-    """
-        """
-    class Meta:
-        ordering = ["-post_date"]
-    
-    def get_absolute_url(self):
-        """
-        #Returns the url to access a particular blog instance.
-        """
-        return reverse('blog-detail', args=[str(self.id)])
-
-    def __str__(self):
-        """
-        #String for representing the Model object.
-        """
-        return self.name
     """
