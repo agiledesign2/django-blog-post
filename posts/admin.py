@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.utils import timezone
 from django.db import models
 from django.forms import TextInput, Textarea
+from django.utils.safestring import mark_safe
 #from import_export.admin import ImportExportModelAdmin, ImportExportActionModelAdmin
 from .models import Category, Post
 
@@ -9,20 +10,21 @@ from .models import Category, Post
 class PostAdmin(admin.ModelAdmin):	#(ImportExportModelAdmin):
     list_display = (
         'title', 'author', 'content', 'description', 'allow_comments', 
-        'tags', 'status', 'views_count', 'created', 'updated', 'published'
+        'tags', 'status', 'views_count', 'created', 'updated', 'published',
+        'cover_admin' 
     )
     search_fields = ('title', 'author', 'description', 'content', 'published')
     list_filter = ('category', 'author', 'tags', 'published')
     list_editable = ('allow_comments',)
     date_hierarchy = 'published'
-    #readonly_fields = ('cover_admin', )
+    #readonly_fields = ('cover', )
     list_display_links = ["title","published"]
     raw_id_fields = ('author',)
     list_per_page = 15
 
     fieldsets = (
         ('Post', {
-            'fields': ('title', 'category', 'content', 'description', 'allow_comments', 'tags', 'status')
+            'fields': ('title', 'category', 'cover', 'content', 'description', 'allow_comments', 'tags', 'status')
         }),
         ('Admin Posts', {
             'classes': ('collapse', ),
@@ -31,6 +33,12 @@ class PostAdmin(admin.ModelAdmin):	#(ImportExportModelAdmin):
             ),
         }),
     )
+
+    def cover_admin(self, obj):
+        return mark_safe(f'<img width="60px" height="60px" src="{obj.get_cover}">') # noqa
+
+    cover_admin.allow_tags = True
+    cover_admin.short_description = 'Cover'
 
     formfield_overrides = {
         models.CharField: {'widget': TextInput(attrs={'size': '59'})},

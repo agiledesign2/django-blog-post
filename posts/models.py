@@ -78,6 +78,12 @@ class PostQuerySet(models.QuerySet):
 
 
 class Post(models.Model):
+    
+    def image_upload_to(self, filename):
+        extension = filename[filename.rfind('.'):]
+        new_path = f'posts_covers/{self.pk}-{self.slug}-cover{extension}'
+        return new_path
+
     STATUS_DRAFT = 1
     STATUS_PUBLISHED = 2
     STATUS_ARCHIVED = 3
@@ -93,20 +99,19 @@ class Post(models.Model):
         on_delete=models.CASCADE
     )
     title = models.CharField(_("Title"), max_length=300)
-    category = models.ManyToManyField(Category,_("Category"), blank=False, on_delete=models.CASCADE)
+    category = models.ManyToManyField(Category,_("Category"), blank=False)
     slug = models.SlugField(max_length=255, unique_for_date="published")
     content = MarkdownxField()  # markdownx
     #content = RichTextField()
     #content = MDTextField(verbose_name='Content')
     description = models.TextField(_("Description"), max_length=150, help_text="Enter you description text here.")
+    cover = models.ImageField(upload_to=image_upload_to, default = 'img/default_cover.jpg', blank=True)
     #cover = models.CharField(max_length=200, default='https://image.3001.net/images/20200304/15832956271308.jpg', verbose_name='Cover')
     created = models.DateTimeField(_("Created"), default=timezone.now, editable=False)  # when first revision was created
     updated = models.DateTimeField(_("Updated"), null=True, blank=True)  # when last revision was created (even if not published)
-    #published = models.DateTimeField(_("Published"), auto_now=True)  # when last published
     published = models.DateTimeField(_("Published"), null=True, blank=True)  # when last published
     #is_recommend = models.BooleanField(default=False, verbose_name='Is Recommend')
     allow_comments = models.BooleanField(default=True)
-    #status = models.CharField(default="DRAFT", choices=STATUS, max_length=10)
     status = models.SmallIntegerField(_("State"), choices=STATUS)	# default=STATE_CHOICES[0][0]
     views_count = models.IntegerField(_("View count"), default=0, editable=False)
     #tag = models.ManyToManyField(Tag, verbose_name='Tag')
@@ -143,6 +148,10 @@ class Post(models.Model):
         self.view_count += 1
         self.save(update_fields=['view_count'])
         #self.current().viewed()
+
+    @property
+    def get_cover(self):
+        return self.cover.url #or f'{settings.STATIC_URL}/static/img/default_cover.png'
 
         """
 
