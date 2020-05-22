@@ -25,7 +25,7 @@ def make_slug(instance, new_slug=None):
 class PostAdminForm(forms.ModelForm):
     class Meta:
         model = Post
-        exclude = ('author', 'created_date', 'updated_date', 'published_date')
+        exclude = ('author', 'created', 'updated', 'published')
         widgets = {
             'body': CKEditorUploadingWidget(),
             'snippet': CKEditorUploadingWidget(config_name='small'),
