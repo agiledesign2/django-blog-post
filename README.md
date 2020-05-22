@@ -19,7 +19,7 @@ Main requirements
 ------------
 
 1. `python` 3.5, 3.6, 3.7
-2. `Django` 2.1.8
+2. `Django` 2.2.12
 3. `PostreSQL` 11.1
 
 This project also uses a few external packages (see `requirements.txt` file for details).
@@ -44,7 +44,7 @@ Firstly, create a new directory and change to it:
 
 Then, clone this repository to the current directory:
 
-`git clone https://github.com/kkosiba/blog-django.git .`
+`git clone https://github.com/agiledesign2/django-blog-post.git .`
 
 
 Next, one needs to setup database like SQLite or PostgreSQL on a local machine. This project uses PostgreSQL by default (see [Django documentation](https://docs.djangoproject.com/en/2.1/ref/settings/#databases) for different setup). This process may vary from one OS to another, eg. on Arch Linux one can follow a straightforward guide [here](https://wiki.archlinux.org/index.php/PostgreSQL).
