@@ -114,7 +114,6 @@ class Post(models.Model):
     allow_comments = models.BooleanField(default=True)
     status = models.SmallIntegerField(_("State"), choices=STATUS)	# default=STATE_CHOICES[0][0]
     views_count = models.IntegerField(_("View count"), default=0, editable=False)
-    #tag = models.ManyToManyField(Tag, verbose_name='Tag')
 
     # tags mechanism
     tags = TaggableManager(blank=True)
@@ -145,8 +144,8 @@ class Post(models.Model):
         """
         Increment post view count
         """
-        self.view_count += 1
-        self.save(update_fields=['view_count'])
+        self.views_count += 1
+        self.save(update_fields=['views_count'])
         #self.current().viewed()
 
     @property
@@ -154,13 +153,6 @@ class Post(models.Model):
         return self.cover.url #or f'{settings.STATIC_URL}/static/img/default_cover.png'
 
         """
-
-    def viewed(self):
-        """
-        #Viewed
-        """
-        self.click_count += 1
-        self.save(update_fields=['click_count'])
 
     def cover_data(self):
         return format_html(

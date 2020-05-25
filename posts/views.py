@@ -143,6 +143,11 @@ class DetailsPost(CategoryDatesMixin, DetailView):
         #item.viewed()
         #return item
 
+    def get(self, request, *args, **kwargs):
+        res = super().get(request, *args, **kwargs)    
+        self.object.viewed()
+        return res
+
 
 # Post archive views
 class ArchiveMixin:
