@@ -1,19 +1,36 @@
 # django-blog-post
-Simple Django blogging app for testing module post
+Simple Django blogging app for testing my new module post
 
  ![blog](https://github.com/kkosiba/blog-django/blob/master/pics/main.png)
 
 Features
 --------
-1. User authorisation and registration
+1. Basic User authorisation and registration
 2. Basic user permissions: admin, editor, normal.
 	- Editors can add posts, update/delete the existing ones for which they have suitable
 	  permissions/ownership.
 	- admin is superuser as usual.
 3. Facebook comments
 4. Tags
-5. Search, year/month archives, sort by post author, category, tags.
-6. Basic REST API provided by Django REST framework (available at `/api`)
+5. Post History.
+6. Search, year/month archives 
+7. Sort by post author, category, tags.
+8. Basic REST API provided by Django REST framework (available at `/api`)
+9. Contact us page (configurable)
+
+
+Planned Modules
+----------
+Blog pages
+
+google analytics
+
+SEO compliant
+
+Dynamic Menu.
+
+Social Login.
+
 
 Main requirements
 ------------
