@@ -80,6 +80,9 @@ class PostQuerySet(models.QuerySet):
 class Post(models.Model):
     
     def image_upload_to(self, filename):
+        """
+        return new name o the file
+        """
         extension = filename[filename.rfind('.'):]
         new_path = f'posts_covers/{self.pk}-{self.slug}-cover{extension}'
         return new_path
@@ -125,6 +128,9 @@ class Post(models.Model):
         verbose_name_plural = 'Posts'
 
     def __str__(self):
+        """
+        Return Post title
+        """
         return self.title
 
     def get_absolute_url(self):
@@ -150,6 +156,9 @@ class Post(models.Model):
 
     @property
     def get_cover(self):
+        """
+        Return cover url
+        """
         return self.cover.url #or f'{settings.STATIC_URL}/static/img/default_cover.png'
 
         """

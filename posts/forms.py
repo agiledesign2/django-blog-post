@@ -4,6 +4,7 @@ from django.utils.text import slugify
 from django.utils.crypto import get_random_string
 from django.core.exceptions import ValidationError
 #from ckeditor_uploader.widgets import CKEditorUploadingWidget
+#from django.core.files.images import get_image_dimensions
 from .models import Category, Post
 from taggit.forms import TagWidget
 
@@ -58,13 +59,46 @@ class AddPostForm(forms.ModelForm):
         slug = cleaned_data.get("slug")
 
         if not slug and title:
-            print(title)
             cleaned_data["slug"] = slugify(title)
             cleaned_data["published"] = timezone.now()
             cleaned_data["updated"] = timezone.now()
-            print(cleaned_data)
 
         return cleaned_data
+
+    def clean_cover(self):
+        cover = self.cleaned_data['cover']
+
+        try:
+            #w, h = get_image_dimensions(cover)
+
+            #validate dimensions
+            #max_width = max_height = 100
+            #if w > max_width or h > max_height:
+            #    raise forms.ValidationError(
+            #        f'Please use an image that is {max_width} x {max_height} pixels or smaller.'
+            #    )
+
+            #validate content type
+            main, sub = cover.content_type.split('/')
+            if not (main == 'image' and sub in ['jpeg', 'jpg', 'gif', 'png']):
+                raise forms.ValidationError(
+                    f'Please use a JPEG, GIF or PNG image.'
+                )
+
+            #validate file size
+            if len(cover) > (200 * 1024):
+                raise forms.ValidationError(
+                    f'Avatar file size may not exceed 200k.'
+                )
+
+        except AttributeError:
+            """
+            Handles case when we are updating the Post cover
+            and do not supply a new cover
+            """
+            pass
+
+        return cover
 
     def save(self, commit=True):
         print(commit)

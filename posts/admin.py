@@ -18,14 +18,14 @@ class PostAdmin(admin.ModelAdmin):	#(ImportExportModelAdmin):
     list_filter = ('category', 'author', 'tags', 'published')
     list_editable = ('allow_comments',)
     date_hierarchy = 'published'
-    #readonly_fields = ('cover', )
+    readonly_fields = ['cover_admin']
     list_display_links = ["title","published"]
     raw_id_fields = ('author',)
     list_per_page = 15
-
+    
     fieldsets = (
         ('Post', {
-            'fields': ('title', 'category', 'cover', 'content', 'description', 'allow_comments', 'tags', 'status')
+            'fields': ('title', 'category', 'cover_admin', 'cover', 'content', 'description', 'allow_comments', 'tags', 'status')
         }),
         ('Admin Posts', {
             'classes': ('collapse', ),
@@ -34,9 +34,10 @@ class PostAdmin(admin.ModelAdmin):	#(ImportExportModelAdmin):
             ),
         }),
     )
+    
 
     def cover_admin(self, obj):
-        return mark_safe(f'<img width="60px" height="60px" src="{obj.get_cover}">') # noqa
+        return mark_safe(f'<img width="100px" height="100px" src="{obj.get_cover}">') # noqa
 
     cover_admin.allow_tags = True
     cover_admin.short_description = 'Cover'
