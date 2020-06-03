@@ -1,7 +1,7 @@
-{% extends 'base.html' %}
+{% extends 'posts/post_base.html' %} 
 {% load crispy_forms_tags %}
 
-{% block title %} {% if update %}Update{% else %}Add{% endif %} Post {% endblock %}
+{% block head_title %} {% if update %}Update{% else %}Add{% endif %} Post {% endblock %}
 
 {% block content %}
 <div class="p-4 text-center m-auto">

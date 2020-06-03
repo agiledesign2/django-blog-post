@@ -1,6 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'posts/post_base.html' %} 
 
-{% block title %} Search results for '{{ request.GET.q }}' {% endblock %}
+{% block head_title %} Search results for '{{ request.GET.q }}' {% endblock %}
 
 {% block content %}
     {% if request.GET.q %}
