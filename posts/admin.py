@@ -15,12 +15,13 @@ class PostAdmin(admin.ModelAdmin):	#(ImportExportModelAdmin):
         'cover_admin' 
     )
     search_fields = ('title', 'author', 'description', 'content', 'published')
-    list_filter = ('category', 'author', 'tags', 'published')
+    list_filter = ('status', 'category', 'author', 'tags', 'published')
     list_editable = ('allow_comments',)
     date_hierarchy = 'published'
     readonly_fields = ['cover_admin']
     list_display_links = ["title","published"]
     raw_id_fields = ('author',)
+    ordering = ('status', 'published')
     list_per_page = 15
     
     fieldsets = (
