@@ -12,25 +12,25 @@ class Command(BaseCommand):
             User.objects.create_superuser(
                 "admin", "admin@domain.com", "admin")
         if not User.objects.filter(username="editor").exists():
-            User.objects.create_user(
+            editor = User.objects.create_user(
             	'editor', 'editor@domain.com', 'editor')
+            #new_group, created = Group.objects.get_or_create(name='Editors')
+            group = Group.objects.create(name='Editors')
+            ct = ContentType.objects.get_for_model(Post)
+            #Post._meta.app_label
+            #Post._meta.model_name
+            #permissions = Permission.objects.filter(content_type__app_label='app label', content_type__model='model name')
+            permissions = Permission.objects.filter(content_type=ct)
+            group.user_set.add(editor)
+            group.permissions.set(permissions)
         if not User.objects.filter(username="normal").exists():
             User.objects.create_user(
             	'normal', 'normal@domain.com', 'normal')
-        from django.contrib.auth.models import Group
 
-		Group.objects.create(name='Name of the group')
 		# g1.user_set.add(user1, user2, user5, user7)
 		# g1.permissions.add(perm1, perm3, perm4)
 
-
-		#new_group, created = Group.objects.get_or_create(name='new_group')
-		# Code to add permission to group ???
-		ct = ContentType.objects.get_for_model(Post)
-		# Now what - Say I want to add 'Can add project' permission to new_group?
-		#new_group, created = Group.objects.get_or_create(name='new_group')
-		proj_add_perm = Permission.objects.get(name='Can add project')
-		new_group.permissions.add(proj_add_perm)
-            self.stdout.write(self.style.SUCCESS('Users has created'))
+		#proj_add_perm = Permission.objects.get(name='Can add project')
+            self.stdout.write(self.style.SUCCESS('Group and Users has been created'))
         else:
-            self.stdout.write(self.style.SUCCESS('Users already exists'))
+            self.stdout.write(self.style.SUCCESS('Group and Users already exists'))

@@ -5,6 +5,7 @@ from .models import Post, Category
 from taggit.models import Tag
 
 from .forms import AddPostForm
+#from .validator import group_required
 
 # complex lookups (for searching)
 from django.db.models import Q
@@ -166,6 +167,7 @@ class PostYearMonthArchive(CategoryDatesMixin, ArchiveMixin, MonthArchiveView):
 
 
 # Create, delete and update post views
+# @group_required('Editors')
 class AddPost(
     CategoryDatesMixin, PermissionRequiredMixin, LoginRequiredMixin, CreateView
 ):

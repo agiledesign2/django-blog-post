@@ -1,4 +1,5 @@
 from django import template
+#from django.contrib.auth.models import Group
 import calendar
 
 register = template.Library()
@@ -40,3 +41,10 @@ def url_replace(request, field, value):
     query_string[field] = value
     
     return query_string.urlencode()
+
+@register.filter(name='has_group')
+def has_group(user, group_name):
+    """ {% if request.user | has_group:'Editors' %} """
+    #group = Group.objects.get(name=group_name)
+    #return True if group in user.groups.all() else False
+    return user.groups.filter(name=group_name).exists()
