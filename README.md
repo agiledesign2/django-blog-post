@@ -5,18 +5,19 @@ Simple Django blogging app for testing my new module post
 
 Features
 --------
-1. Basic User authorisation and registration
-2. Basic user permissions: admin, editor, normal.
-	- Editors can add posts, update/delete the existing ones for which they have suitable
-	  permissions/ownership.
-	- admin is superuser as usual.
-3. Facebook comments
-4. Tags
+1. Basic User authorisation and registration.
+2. Basic User, Group permissions: admin, editor, normal.
+	- Editors: is a Group. User of this group can add posts, update/delete the existing 
+	  posts for which they have permissions/ownership.
+	- admin: is superuser as usual.
+	- normal user can add comments and like posts
+3. Facebook comments.
+4. Tags.
 5. Post History.
-6. Search, year/month archives 
+6. Search, year/month archives.
 7. Sort by post author, category, tags.
-8. Basic REST API provided by Django REST framework (available at `/api`)
-9. Contact us page (configurable)
+8. Basic REST API provided by Django REST framework (available at `/api`).
+9. Contact us page (configurable).
 
 
 Planned Modules
@@ -36,7 +37,7 @@ Main requirements
 ------------
 
 1. `python` 3.5, 3.6, 3.7
-2. `Django` 2.2.12
+2. `Django` 2.2.13
 3. `PostreSQL` 11.1
 
 This project also uses a few external packages (see `requirements.txt` file for details).
@@ -89,4 +90,10 @@ The blog should be available at `localhost:8000`.
 
 ## What's next?
 
-At this point, one may want to create a superuser account, create the Editors group and add a few users to this group.
+At this point you can create a superuser account, the Editors group, add a user to this group and create a normal user to this group.
+You can do all this with `python3 manage.py makesuper`.
+
+1. This command create 
+	- A admin user with user name: admin with password: admin.
+	- A normal user name: editor with password: editor and added it to the Editor group.
+	- A normal user name: normal with password normal.
