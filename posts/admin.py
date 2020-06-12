@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.utils import timezone
 from django.db import models
 from django.utils.text import slugify
+from django.utils.crypto import get_random_string
 from django.forms import TextInput, Textarea
 from django.utils.safestring import mark_safe
 #from import_export.admin import ImportExportModelAdmin, ImportExportActionModelAdmin
@@ -54,7 +55,13 @@ class PostAdmin(admin.ModelAdmin):	#(ImportExportModelAdmin):
 
     def save_model(self, request, obj, form, change):
         obj.slug = slugify(obj.title)
+        # check if there exists a post with existing slug
+        q = Post.objects.filter(slug=obj.slug)
+        if q.exists():
+            obj.slug = "-".join([obj.slug, get_random_string(4, "0123456789")])
+
         obj.author = request.user
+
         if (obj.published is None
                 and obj.status in [Post.STATUS_PUBLISHED]):
             obj.published = timezone.now()

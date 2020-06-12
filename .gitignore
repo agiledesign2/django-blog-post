@@ -4,5 +4,6 @@ __pycache__
 blog/migrations
 pics
 env
+media
 db.sqlite3
 .vscode
