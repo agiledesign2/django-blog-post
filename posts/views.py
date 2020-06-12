@@ -179,6 +179,12 @@ class AddPost(
     def form_valid(self, form):
         form.save(commit=False)
         form.instance.author = self.request.user
+
+        if form.instance.status in [Post.STATUS_PUBLISHED]:
+            form.instance.published = timezone.now()
+        else:
+            form.instance.updated = timezone.now()
+
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):

@@ -60,8 +60,6 @@ class AddPostForm(forms.ModelForm):
 
         if not slug and title:
             cleaned_data["slug"] = slugify(title)
-            cleaned_data["published"] = timezone.now()
-            cleaned_data["updated"] = timezone.now()
 
         return cleaned_data
 
@@ -101,7 +99,6 @@ class AddPostForm(forms.ModelForm):
         return cover
 
     def save(self, commit=True):
-        print(commit)
         instance = super().save(commit=False)
         instance.slug = make_slug(instance)
 
