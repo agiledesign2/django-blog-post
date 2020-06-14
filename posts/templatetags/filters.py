@@ -1,6 +1,9 @@
 from django import template
+from django.db.models import Count
 #from django.contrib.auth.models import Group
 import calendar
+
+from .models import Post
 
 register = template.Library()
 
@@ -48,3 +51,13 @@ def has_group(user, group_name):
     #group = Group.objects.get(name=group_name)
     #return True if group in user.groups.all() else False
     return user.groups.filter(name=group_name).exists()
+
+@register.simple_tag
+def total_posts():
+    return Post.objects.published().count()
+
+
+@register.inclusion_tag('posts/latest_posts.html')
+def show_latest_posts(count=5):
+    latest_posts = Post.objects.published().order_by('-published')[:count]
+    return {'latest_posts': latest_posts}
