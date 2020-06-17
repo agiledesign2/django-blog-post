@@ -3,7 +3,7 @@ from django.db.models import Count
 #from django.contrib.auth.models import Group
 import calendar
 
-from .models import Post
+from ..models import Post
 
 register = template.Library()
 

@@ -1,9 +1,8 @@
 *.pyc
 *~
 __pycache__
-blog/migrations
 pics
 env
-media
+base/media
 db.sqlite3
 .vscode
