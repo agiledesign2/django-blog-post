@@ -113,9 +113,7 @@ MIGRATION_MODULES = {
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#authentication-backends
 AUTHENTICATION_BACKENDS = [
-    #'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-    'pinax.likes.auth_backends.CanLikeBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
