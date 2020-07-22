@@ -87,7 +87,7 @@
                             <ul class="list-unstyled mt-2">
                                 {% for post in recent_posts %}
                                     <li>
-                                        &raquo;&nbsp;<a href="{% url 'posts:details_post' slug=post.slug %}">{{ post }}</a>
+                                        &raquo;&nbsp;<a href="{% url 'posts:detail_post' slug=post.slug %}">{{ post }}</a>
                                     </li>
                                 {% empty %}
                                     <p>No posts.</p>

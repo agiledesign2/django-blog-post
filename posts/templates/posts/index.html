@@ -10,7 +10,7 @@
 {% if not post.is_draft %}
 <div class="post">
   <p class="blog-post-title h2">
-    <a href="{% url 'posts:details_post' slug=post.slug %}">{{ post.title }}</a>
+    <a href="{% url 'posts:detail_post' slug=post.slug %}">{{ post.title }}</a>
   </p>
   <div class="row">
     <div class="col-md-6">
@@ -20,7 +20,7 @@
           <a href="{% url 'posts:author' author=post.author.username %}">{{ post.author.username.capitalize }}</a>
         </b>
         |
-        <a href="{% url 'posts:details_post' slug=post.slug %}">
+        <a href="{% url 'posts:detail_post' slug=post.slug %}">
           Comments (<span
               class="fb-comments-count"
               data-href="{{ request.build_absolute_uri }}/{{ post.slug }}/"
@@ -42,7 +42,7 @@
   <div class="w-100">
     <!-- shorten + markdown -->
     {{ post.content | shorten_post }}
-    <a href="{% url 'posts:details_post' slug=post.slug %}"> Read more</a>
+    <a href="{% url 'posts:detail_post' slug=post.slug %}"> Read more</a>
   </div>
 </div>
 <hr />

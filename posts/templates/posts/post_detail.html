@@ -6,7 +6,7 @@
 {% block content %}
 {% if not post.is_draft %}
 <div class="post">
-    <p class="blog-post-title h2"><a href="{% url 'posts:details_post' slug=post.slug %}">{{ post.title }}</a></p>
+    <p class="blog-post-title h2"><a href="{% url 'posts:detail_post' slug=post.slug %}">{{ post.title }}</a></p>
     <div class="row">
         <div class="col-md-6">
             <p>
