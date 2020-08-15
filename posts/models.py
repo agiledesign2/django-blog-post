@@ -84,7 +84,7 @@ class Post(models.Model):
         return new name o the file
         """
         extension = filename[filename.rfind('.'):]
-        new_path = f'posts_covers/{self.pk}-{self.slug}-cover{extension}'
+        new_path = f'posts_covers/{self.pk}/{self.pk}-{self.slug}-cover{extension}'
         return new_path
 
     STATUS_DRAFT = 1
